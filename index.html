@@ -2890,90 +2890,40 @@ if("serviceWorker" in navigator){
   }
 })();
 </script>
+
 <script>
-/* The opening questions are out of the way.
-   Nine questions before anybody saw a suggestion. The research on this
-   category is blunt: a long onboarding quiz loses the reluctant partner
-   before the first real interaction. The answers still tailor which
-   suggestions appear, so the quiz is not deleted — it is offered instead.
-   A dismissible card on Today, and a permanent row in Settings. It never
-   opens by itself. */
+/* The questions are gone from the app.
+
+   They were never connected to anything. The habits carry a title and a
+   description and no tags; pickPair chooses with Math.random(); the word
+   profile appears once in the whole file and never in habit selection. Nine
+   questions were asked, stored, and ignored — and the Settings row I wrote
+   this morning claimed they made the suggestions fit your marriage, which
+   was not true.
+
+   Rather than leave a questionnaire that does nothing, or a skip button on
+   a questionnaire that does nothing, it does not open at all. If the habits
+   are ever tagged and pickPair filters on the answers, this block comes out
+   and the questions come back honestly. */
 (function(){
-  var OFF = 'hw-quiz-dismissed';
   function muzzle(){
-    if (typeof startQuiz !== 'function' || startQuiz.__onlyOnRequest) return;
-    var orig = startQuiz;
-    window.startQuiz = function(asked){ if (asked !== true) return; return orig.apply(this, arguments); };
-    window.startQuiz.__onlyOnRequest = true;
-    window.__openQuiz = function(){ return orig.call(window, true); };
+    if (typeof startQuiz !== 'function' || startQuiz.__off) return;
+    window.startQuiz = function(){ return; };
+    window.startQuiz.__off = true;
   }
   muzzle(); setTimeout(muzzle, 400); setTimeout(muzzle, 1500);
 
-  function answered(){
-    try { return !!(typeof profile !== 'undefined' && profile && Object.keys(profile).length > 1); } catch(e){ return false; }
+  function tidy(){
+    ['quizOffer','quizRow','quizScreen'].forEach(function(id){
+      var el = document.getElementById(id); if (el) el.remove();
+    });
+    var q = document.getElementById('quiz-screen');
+    if (q) q.style.display = 'none';
   }
-  function dismissed(){ try { return localStorage.getItem(OFF) === '1'; } catch(e){ return false; } }
-
-  function onToday(){
-    var host = document.getElementById('screen-home');
-    if (!host) return;
-    var card = document.getElementById('quizOffer');
-    if (answered() || dismissed()) { if (card) card.remove(); return; }
-    if (card) return;
-    card = document.createElement('div');
-    card.id = 'quizOffer'; card.className = 'card quiz-offer';
-    card.innerHTML =
-      '<p class="quiz-offer-t">Make these fit your marriage</p>' +
-      '<p class="quiz-offer-s">A few questions, and the daily suggestions change to match. Nothing is required.</p>' +
-      '<div class="quiz-offer-row">' +
-        '<button class="btn" id="quizGo">Answer them</button>' +
-        '<button class="pw-link" id="quizNo">Not now</button>' +
-      '</div>';
-    host.insertBefore(card, host.firstChild);
-    document.getElementById('quizGo').onclick = function(){ if (window.__openQuiz) window.__openQuiz(); };
-    document.getElementById('quizNo').onclick = function(){
-      try { localStorage.setItem(OFF, '1'); } catch(e){}
-      card.remove();
-    };
-  }
-
-  function inSettings(){
-    var host = document.getElementById('screen-reminders');
-    if (!host || document.getElementById('quizRow')) return;
-    var done = answered();
-    var wrap = document.createElement('div');
-    wrap.id = 'quizRow'; wrap.className = 'quiz-row';
-    wrap.innerHTML =
-      '<p class="section-label">Suggestions</p>' +
-      '<p class="quiz-row-sub">' +
-        (done ? 'You have answered these. You can change them whenever.'
-              : 'A few questions about your marriage, so the daily suggestions fit it better.') +
-      '</p>' +
-      '<button class="btn quiet" id="quizRowBtn">' + (done ? 'Change your answers' : 'Answer a few questions') + '</button>';
-    var back = document.getElementById('backToApps');
-    if (back && back.parentNode === host) host.insertBefore(wrap, back); else host.appendChild(wrap);
-    document.getElementById('quizRowBtn').onclick = function(){
-      try { localStorage.removeItem(OFF); } catch(e){}
-      if (window.__openQuiz) window.__openQuiz();
-    };
-  }
-
-  function draw(){ onToday(); inSettings(); }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function(){ setTimeout(draw, 900); });
-  else setTimeout(draw, 900);
-  document.addEventListener('click', function(){ setTimeout(draw, 160); }, true);
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function(){ setTimeout(tidy, 600); });
+  else setTimeout(tidy, 600);
+  document.addEventListener('click', function(){ setTimeout(tidy, 150); }, true);
 })();
 </script>
-<style>
-.quiz-offer{border:1.5px dashed #D8D4E8}
-.quiz-offer-t{font-size:16px;font-weight:700;color:#1F1B56;margin:0 0 4px}
-.quiz-offer-s{font-size:13.5px;line-height:1.55;color:#6F6A94;margin:0 0 12px}
-.quiz-offer-row{display:flex;gap:10px;align-items:center}
-.quiz-offer-row .btn{flex:1;min-height:44px}
-.quiz-offer-row .pw-link{width:auto;flex:0 0 auto;padding:11px 10px}
-.quiz-row{margin-top:26px}
-.quiz-row-sub{color:#6F6A94;font-size:13.5px;line-height:1.55;margin:0 0 10px}
-#quizRowBtn{width:100%;min-height:46px}
-</style>
 </body>
 </html>
