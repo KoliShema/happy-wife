@@ -3049,5 +3049,67 @@ if("serviceWorker" in navigator){
 .hw-err{color:#C62828;font-size:13px;min-height:16px;margin-top:6px}
 #hwOn,#hwOff{width:100%;min-height:46px}
 </style>
+<script>
+/* Ways to be close without touch — for him.
+   Her app has had this since the start; his never did. During the weeks a
+   couple cannot touch, he needs it as much as she does, and had nothing.
+
+   Written from what the research says women report rather than what a man
+   would guess: the mental load is noticing and anticipating, being understood
+   matters more than being fixed, and how you answer good news predicts
+   satisfaction. The mirror of this list in her app had drifted into flowers
+   and notes — a romantic-gestures list pointed at a husband — so this one is
+   deliberately concrete and mostly not verbal. */
+(function(){
+  var CLOSE = [
+  'Take one thing off her list without being asked, and don\'t announce it.',
+  'Ask what she\'s been carrying this week, and don\'t offer a solution.',
+  'Tell her she looks nice on a day she hasn\'t done anything different.',
+  'Do the bedtime round so she can sit down before nine.',
+  'Ask about the thing she was dreading, after it\'s happened.',
+  'Say you miss her. Not as a hint, just that.',
+  'Notice the thing she did that nobody noticed, and say it.',
+  'Sit with her when she\'s talking without reaching for your phone.',
+  'Ask who she\'s spoken to this week who isn\'t family.',
+  'Tell her one thing you\'d pick again.',
+  'Let her tell you the whole thing before you say anything.',
+  'Take the children out for an hour and don\'t come back early.',
+  'Say thank you for something she\'s done every week for years.',
+  'Ask what would make tomorrow easier, and do that one thing.',
+  'Tell her what you said about her to somebody else this week.',
+  'Put your coat on and walk round the block with her.',
+  'Find out what she\'s reading and ask about it again in a few days.',
+  'Say sorry for the thing from earlier, without the second half of the sentence.',
+  'Ask what she\'d do with a free afternoon, and then arrange it.',
+  'Sit at the table after the meal instead of getting up.'
+];
+
+  function draw(){
+    var host = document.getElementById('screen-ideas') || document.getElementById('screen-dates');
+    if (!host || document.getElementById('closeList')) return;
+    var wrap = document.createElement('div');
+    wrap.id = 'closeList'; wrap.className = 'close-list';
+    var items = CLOSE.map(function(x){
+      var li = document.createElement('li');
+      li.textContent = x;
+      return li.outerHTML;
+    }).join('');
+    wrap.innerHTML = '<p class="section-label">Close without touching</p>' +
+      '<p class="close-sub">For the weeks you can\u2019t. None of these need a reason.</p>' +
+      '<ul class="close-ul">' + items + '</ul>';
+    var back = document.getElementById('backToApps');
+    if (back && back.parentNode === host) host.insertBefore(wrap, back); else host.appendChild(wrap);
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function(){ setTimeout(draw, 900); });
+  else setTimeout(draw, 900);
+  document.addEventListener('click', function(){ setTimeout(draw, 160); }, true);
+})();
+</script>
+<style>
+.close-list{margin-top:26px}
+.close-sub{color:#6F6A94;font-size:13.5px;line-height:1.55;margin:0 0 12px}
+.close-ul{list-style:none;padding:0;margin:0}
+.close-ul li{padding:13px 0;border-top:1px solid rgba(0,0,0,.07);font-size:15px;line-height:1.55;color:#1F1B56}
+</style>
 </body>
 </html>
