@@ -1,26 +1,44 @@
-/* Self-removing service worker.
-   The cache here kept phones on an old copy of the app, so sign-in fixes
-   never reached the people who needed them. Caching the whole app was never
-   worth that: it is a small page and it must always be current.
+/* Happy Wife — push only.
+   This replaces a self-removing worker that unregistered itself and deleted
+   every cache on each visit. On a phone where it was already active that
+   produced a white screen: it wiped what it was serving. It did its job and
+   should not have been left in place.
 
-   This deletes every cache, unregisters itself, and reloads any open tab so
-   the next load comes from the network. Once every device has run it, this
-   file can be deleted. */
+   This one clears any cache it finds once, on activate, and then stops
+   touching anything. No fetch handler, so nothing is ever served from cache. */
 
 self.addEventListener('install', function(){ self.skipWaiting(); });
 
-self.addEventListener('activate', function(event){
-  event.waitUntil((async function(){
+self.addEventListener('activate', function(e){
+  e.waitUntil((async function(){
     try {
       var keys = await caches.keys();
       await Promise.all(keys.map(function(k){ return caches.delete(k); }));
-    } catch (e) {}
-    try { await self.registration.unregister(); } catch (e) {}
-    try {
-      var list = await self.clients.matchAll({ type: 'window' });
-      list.forEach(function(c){ if (c.navigate) c.navigate(c.url); });
-    } catch (e) {}
+    } catch (err) {}
+    try { await self.clients.claim(); } catch (err) {}
   })());
 });
 
-/* No fetch handler: nothing is served from cache from now on. */
+self.addEventListener('push', function(event){
+  var d = { title: 'Happy Wife', body: 'One small thing today.' };
+  try { if (event.data) d = Object.assign(d, event.data.json()); } catch (err) {}
+  event.waitUntil(
+    self.registration.showNotification(d.title, {
+      body: d.body, icon: 'icon-192.png', badge: 'icon-192.png',
+      tag: 'hw-daily', renotify: false, data: { url: d.url || './' }
+    })
+  );
+});
+
+self.addEventListener('notificationclick', function(event){
+  event.notification.close();
+  var target = (event.notification.data && event.notification.data.url) || './';
+  event.waitUntil(
+    self.clients.matchAll({ type:'window', includeUncontrolled:true }).then(function(list){
+      for (var i = 0; i < list.length; i++){
+        if (list[i].url.indexOf(target) !== -1 && 'focus' in list[i]) return list[i].focus();
+      }
+      if (self.clients.openWindow) return self.clients.openWindow(target);
+    })
+  );
+});
