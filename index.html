@@ -3213,5 +3213,77 @@ if("serviceWorker" in navigator){
   else setTimeout(count, 2500);
 })();
 </script>
+<script>
+/* Make the daily habit fit the answers.
+
+   The quiz always worked for date ideas — scoreIdea reads time and budget and
+   ranks the 18 of them. It never touched the 83 daily habits, which were
+   picked at random, so a couple whose children are grown could be told to take
+   the baby before taking their coat off.
+
+   Only three answers can make a habit actually WRONG rather than merely less
+   apt, so only three are used:
+     baby  needs a baby or very small children   -> hidden unless stage is young
+     kids  needs children living at home          -> hidden if there are none
+     big   needs real time, money or planning     -> hidden when energy is low
+
+   Everything untagged is always eligible, so the pool never collapses: 53
+   habits suit anybody. Unanswered questions filter nothing — somebody who
+   skipped the quiz sees all 83, exactly as before. */
+(function(){
+  var TAG = {7:["baby"],8:["baby"],25:["kids"],42:["big"],43:["big"],44:["big"],45:["big"],46:["big"],47:["big"],48:["big"],49:["big"],50:["baby"],51:["baby"],52:["baby"],53:["baby"],54:["baby"],55:["baby"],56:["baby"],57:["kids"],58:["baby"],59:["kids", "big"],60:["baby"],61:["kids"],62:["baby"],63:["kids"],64:["baby"],65:["kids"],66:["baby"],69:["kids"],81:["big"]};
+
+  function answers(){
+    try { if (typeof profile !== 'undefined' && profile) return profile; } catch(e){}
+    try { return JSON.parse(localStorage.getItem('hw-profile') || '{}'); } catch(e){ return {}; }
+  }
+
+  function allowed(i){
+    var t = TAG[i];
+    if (!t) return true;                       // untagged suits everybody
+    var a = answers() || {};
+    var stage = a.stage, kids = a.kids, energy = a.energy;
+    if (Array.isArray(stage)) stage = stage.join(',');
+
+    if (t.indexOf('baby') !== -1) {
+      if (stage && String(stage).indexOf('young') === -1) return false;
+      if (kids === '0') return false;
+    }
+    if (t.indexOf('kids') !== -1) {
+      if (kids === '0') return false;
+      if (stage && String(stage) === 'newly') return false;
+      if (stage && String(stage) === 'empty') return false;
+    }
+    if (t.indexOf('big') !== -1) {
+      if (energy === 'low') return false;
+    }
+    return true;
+  }
+
+  /* pickPair chooses from builtinHabits at random. Rather than rewrite it,
+     hand it a filtered list: swap the array, call the original, put it back. */
+  var orig = window.pickPair;
+  if (typeof orig === 'function' && !orig.__filtered) {
+    window.pickPair = function(){
+      var full = null;
+      try {
+        full = builtinHabits;
+        var keep = full.filter(function(h, i){ return allowed(i); });
+        if (keep.length >= 8) {                 // never leave it threadbare
+          window.builtinHabits = keep;
+        }
+      } catch(e){ full = null; }
+      try {
+        return orig.apply(this, arguments);
+      } finally {
+        if (full) { try { window.builtinHabits = full; } catch(e){} }
+      }
+    };
+    window.pickPair.__filtered = true;
+  }
+
+  window.__habitFit = { allowed: allowed, tagged: Object.keys(TAG).length };
+})();
+</script>
 </body>
 </html>
