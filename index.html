@@ -2925,5 +2925,129 @@ if("serviceWorker" in navigator){
   document.addEventListener('click', function(){ setTimeout(tidy, 150); }, true);
 })();
 </script>
+<script>
+/* Reminders, wired up at last.
+
+   The toggles have been in Settings since the start and never did anything —
+   there was no Notification code in the file at all. The sending chain was
+   built for Happy Children and is proven: a phone subscribed anonymously and
+   the Edge Function has delivered to it.
+
+   No account needed, same as Happy Children. The row holds a push endpoint
+   and a time, nothing else. On iPhone this only works once the app is on the
+   Home Screen, which is Apple's rule, so the card says so rather than failing
+   quietly. */
+(function(){
+  var URL_  = 'https://ujpwrinutaweqcxgjvvr.supabase.co';
+  var KEY_  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVqcHdyaW51dGF3ZXFjeGdqdnZyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA5NTQ5NTIsImV4cCI6MjEwNjUzMDk1Mn0.bGyogL1nmt7Qi553gPkCZ3CBXNT6gujAdpa85G2xoEc';
+  var VAPID = 'BBoAfy3O5WiCyWGMZq_pJi9uJCrBZO4rpEUKaaFuGKCHrFxBTey3d3ErOkJkU2XCY3UPsVyAOBdkK4v55wSrlgc';
+  var LOCAL = 'hw-nudge';
+
+  var iOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+  var standalone = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+  function possible(){ return 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window; }
+
+  function b64(s){
+    var p = '='.repeat((4 - s.length % 4) % 4);
+    var raw = atob((s + p).replace(/-/g,'+').replace(/_/g,'/'));
+    var o = new Uint8Array(raw.length);
+    for (var i = 0; i < raw.length; i++) o[i] = raw.charCodeAt(i);
+    return o;
+  }
+  function saved(){ try { return JSON.parse(localStorage.getItem(LOCAL) || 'null'); } catch(e){ return null; } }
+  function remember(v){ try { localStorage.setItem(LOCAL, JSON.stringify(v)); } catch(e){} }
+  function forget(){ try { localStorage.removeItem(LOCAL); } catch(e){} }
+
+  function send(method, body, q){
+    return fetch(URL_ + '/rest/v1/push_subs' + (q || ''), {
+      method: method,
+      headers: { apikey: KEY_, Authorization: 'Bearer ' + KEY_,
+                 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+      body: body ? JSON.stringify(body) : undefined
+    });
+  }
+
+  async function turnOn(time){
+    var perm = await Notification.requestPermission();
+    if (perm !== 'granted') return { ok:false, why:'Notifications are switched off for this app in your phone settings.' };
+    var reg = await navigator.serviceWorker.register('sw.js');
+    await navigator.serviceWorker.ready;
+    var sub = await reg.pushManager.getSubscription();
+    if (!sub) sub = await reg.pushManager.subscribe({ userVisibleOnly:true, applicationServerKey:b64(VAPID) });
+    var j = sub.toJSON();
+    var r = await send('POST', { endpoint:j.endpoint, p256dh:j.keys.p256dh, auth:j.keys.auth,
+      send_at:time, tz_offset:-new Date().getTimezoneOffset(), app:'wife' });
+    if (!r.ok && r.status !== 409) return { ok:false, why:'Could not save that. Try again.' };
+    remember({ endpoint:j.endpoint, time:time });
+    return { ok:true };
+  }
+
+  async function turnOff(){
+    var s = saved();
+    try {
+      var reg = await navigator.serviceWorker.getRegistration();
+      var sub = reg && await reg.pushManager.getSubscription();
+      if (sub) await sub.unsubscribe();
+    } catch(e){}
+    if (s && s.endpoint) { try { await send('DELETE', null, '?endpoint=eq.' + encodeURIComponent(s.endpoint)); } catch(e){} }
+    forget();
+  }
+
+  function draw(){
+    var host = document.getElementById('screen-reminders');
+    if (!host) return;
+    var card = document.getElementById('hwNudge');
+    if (!card) {
+      card = document.createElement('div');
+      card.id = 'hwNudge'; card.className = 'hw-nudge';
+      var back = document.getElementById('backToApps');
+      if (back && back.parentNode === host) host.insertBefore(card, back); else host.appendChild(card);
+    }
+    var s = saved();
+
+    if (iOS && !standalone) {
+      card.innerHTML = '<p class="section-label">A daily nudge</p>' +
+        '<p class="hw-nudge-s">On an iPhone this needs the app on your Home Screen first \u2014 tap share, ' +
+        'then Add to Home Screen. Apple only allows reminders that way.</p>';
+      return;
+    }
+    if (!possible()) {
+      card.innerHTML = '<p class="section-label">A daily nudge</p>' +
+        '<p class="hw-nudge-s">This browser cannot do reminders.</p>';
+      return;
+    }
+    card.innerHTML = '<p class="section-label">A daily nudge</p>' +
+      (s ? '<p class="hw-nudge-s">On, at ' + s.time + '. One line, once a day.</p>' +
+           '<button class="btn quiet" id="hwOff">Turn it off</button>'
+         : '<p class="hw-nudge-s">One line a day, nothing more. No account needed.</p>' +
+           '<input id="hwTime" type="time" value="19:30" class="hw-time">' +
+           '<button class="btn" id="hwOn">Remind me</button>') +
+      '<div id="hwErr" class="hw-err"></div>';
+
+    var on = document.getElementById('hwOn');
+    if (on) on.onclick = async function(){
+      var t = (document.getElementById('hwTime') || {}).value || '19:30';
+      this.disabled = true; this.textContent = 'Just a moment\u2026';
+      var r = await turnOn(t);
+      if (!r.ok) { document.getElementById('hwErr').textContent = r.why; this.disabled = false; this.textContent = 'Remind me'; }
+      else draw();
+    };
+    var off = document.getElementById('hwOff');
+    if (off) off.onclick = async function(){ this.disabled = true; await turnOff(); draw(); };
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function(){ setTimeout(draw, 900); });
+  else setTimeout(draw, 900);
+  document.addEventListener('click', function(){ setTimeout(draw, 160); }, true);
+})();
+</script>
+<style>
+.hw-nudge{margin-top:26px}
+.hw-nudge-s{color:#6F6A94;font-size:13.5px;line-height:1.55;margin:0 0 10px}
+.hw-time{width:100%;padding:12px 14px;border-radius:11px;border:1.5px solid #E4E1EF;background:#FAF9FD;
+  color:#1F1B56;font:inherit;font-size:16px;margin-bottom:10px;min-height:46px;box-sizing:border-box}
+.hw-err{color:#C62828;font-size:13px;min-height:16px;margin-top:6px}
+#hwOn,#hwOff{width:100%;min-height:46px}
+</style>
 </body>
 </html>
