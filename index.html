@@ -3111,5 +3111,70 @@ if("serviceWorker" in navigator){
 .close-ul{list-style:none;padding:0;margin:0}
 .close-ul li{padding:13px 0;border-top:1px solid rgba(0,0,0,.07);font-size:15px;line-height:1.55;color:#1F1B56}
 </style>
+<script>
+/* A way to tell us it's wrong.
+
+   The research on this category says the same thing repeatedly: people stop
+   using these apps and nobody finds out why. Four people looked at these apps
+   and found four faults — a card showing nonsense, a sign-in wall, a screen
+   that went white, a list written for the wrong spouse. Every one came from
+   somebody saying so, not from checking the code.
+
+   So the ask is specific. "Feedback" gets nothing; "tell us what was wrong"
+   gets something. The subject names the app, and the body starts them off
+   rather than leaving a blank page. */
+(function(){
+  var TO = 'office.kolishema@gmail.com';
+  var APP = 'Happy Wife';
+  var HOST = 'screen-reminders';
+
+  function body(){
+    return [
+      '', '',
+      '--- it helps to know, if you don\u2019t mind ---',
+      'What was wrong, or what you would change:',
+      'Did you stop using it? Which day, and what happened that day:',
+      '',
+      'Phone: ' + (navigator.userAgent || '').slice(0, 120)
+    ].join('\n');
+  }
+
+  function draw(){
+    var host = document.getElementById(HOST);
+    if (!host || document.getElementById('sayBox')) return;
+    var box = document.createElement('div');
+    box.id = 'sayBox'; box.className = 'say-box';
+
+    var lab = document.createElement('p');
+    lab.className = 'section-label';
+    lab.textContent = 'Say something';
+
+    var sub = document.createElement('p');
+    sub.className = 'say-sub';
+    sub.textContent = 'What annoyed you is more use to us than what you liked. '
+                    + 'If you stopped opening it, that is the thing worth telling us.';
+
+    var a = document.createElement('a');
+    a.className = 'btn quiet say-btn';
+    a.href = 'mailto:' + TO
+           + '?subject=' + encodeURIComponent(APP + ' \u2014 something to tell you')
+           + '&body=' + encodeURIComponent(body());
+    a.textContent = 'Tell us what is wrong with it';
+
+    box.appendChild(lab); box.appendChild(sub); box.appendChild(a);
+    var back = document.getElementById('backToApps');
+    if (back && back.parentNode === host) host.insertBefore(box, back); else host.appendChild(box);
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function(){ setTimeout(draw, 900); });
+  else setTimeout(draw, 900);
+  document.addEventListener('click', function(){ setTimeout(draw, 160); }, true);
+})();
+</script>
+<style>
+.say-box{margin-top:26px}
+.say-sub{font-size:13.5px;line-height:1.55;margin:0 0 10px;opacity:.75}
+.say-btn{display:block;width:100%;min-height:46px;text-align:center;text-decoration:none;line-height:30px;box-sizing:border-box}
+</style>
 </body>
 </html>
