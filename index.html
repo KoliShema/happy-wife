@@ -3176,5 +3176,42 @@ if("serviceWorker" in navigator){
 .say-sub{font-size:13.5px;line-height:1.55;margin:0 0 10px;opacity:.75}
 .say-btn{display:block;width:100%;min-height:46px;text-align:center;text-decoration:none;line-height:30px;box-sizing:border-box}
 </style>
+<script>
+/* Counting opens, without knowing who.
+
+   Sign-in is optional now, so the accounts table stopped being any guide to
+   how many people actually use this. One row when the app opens: which app,
+   the date, the hour. No name, no account, no device id, nothing that links
+   today's open to tomorrow's.
+
+   Once a day per phone, decided on the phone, so the number is roughly how
+   many phones opened it that day rather than how many taps.
+
+   The key here can write to that table and cannot read it back, so nobody can
+   use it to see the numbers. If the request fails, nothing happens. */
+(function(){
+  var URL_ = 'https://ujpwrinutaweqcxgjvvr.supabase.co';
+  var KEY_ = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVqcHdyaW51dGF3ZXFjeGdqdnZyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA5NTQ5NTIsImV4cCI6MjEwNjUzMDk1Mn0.bGyogL1nmt7Qi553gPkCZ3CBXNT6gujAdpa85G2xoEc';
+  var APP  = 'wife';
+  var MARK = 'ko-seen';
+  function today(){ return new Date().toISOString().slice(0, 10); }
+  function alreadyToday(){ try { return localStorage.getItem(MARK) === today(); } catch (e) { return true; } }
+  function markToday(){ try { localStorage.setItem(MARK, today()); } catch (e) {} }
+  function count(){
+    if (alreadyToday()) return;
+    markToday();
+    try {
+      fetch(URL_ + '/rest/v1/app_opens', {
+        method: 'POST',
+        headers: { apikey: KEY_, Authorization: 'Bearer ' + KEY_,
+                   'Content-Type': 'application/json', Prefer: 'return=minimal' },
+        body: JSON.stringify({ app: APP }), keepalive: true
+      }).catch(function(){});
+    } catch (e) {}
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function(){ setTimeout(count, 2500); });
+  else setTimeout(count, 2500);
+})();
+</script>
 </body>
 </html>
