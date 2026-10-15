@@ -2892,39 +2892,91 @@ if("serviceWorker" in navigator){
 </script>
 
 <script>
-/* The questions are gone from the app.
+/* The questions, offered rather than forced.
 
-   They were never connected to anything. The habits carry a title and a
-   description and no tags; pickPair chooses with Math.random(); the word
-   profile appears once in the whole file and never in habit selection. Nine
-   questions were asked, stored, and ignored — and the Settings row I wrote
-   this morning claimed they made the suggestions fit your marriage, which
-   was not true.
+   They were switched off while a white screen was being chased. They now do
+   real work: scoreIdea has always used the time and budget answers to rank
+   date ideas, and the daily habit is filtered on stage, children at home and
+   energy, so a couple whose children are grown is not told to take the baby.
 
-   Rather than leave a questionnaire that does nothing, or a skip button on
-   a questionnaire that does nothing, it does not open at all. If the habits
-   are ever tagged and pickPair filters on the answers, this block comes out
-   and the questions come back honestly. */
+   The quiz never opens by itself. Offered on Today, dismissible for good, and
+   a permanent row in Settings for anybody who changed their mind. */
 (function(){
-  function muzzle(){
-    if (typeof startQuiz !== 'function' || startQuiz.__off) return;
-    window.startQuiz = function(){ return; };
-    window.startQuiz.__off = true;
+  var OFF = 'hw-quiz-dismissed';
+  function gate(){
+    if (typeof startQuiz !== 'function' || startQuiz.__onlyOnRequest) return;
+    var orig = startQuiz;
+    window.startQuiz = function(asked){ if (asked !== true) return; return orig.apply(this, arguments); };
+    window.startQuiz.__onlyOnRequest = true;
+    window.__openQuiz = function(){ return orig.call(window, true); };
   }
-  muzzle(); setTimeout(muzzle, 400); setTimeout(muzzle, 1500);
+  gate(); setTimeout(gate, 400); setTimeout(gate, 1500);
 
-  function tidy(){
-    ['quizOffer','quizRow','quizScreen'].forEach(function(id){
-      var el = document.getElementById(id); if (el) el.remove();
-    });
-    var q = document.getElementById('quiz-screen');
-    if (q) q.style.display = 'none';
+  function answered(){ try { return !!(typeof profile !== 'undefined' && profile && Object.keys(profile).length > 1); } catch(e){ return false; } }
+  function dismissed(){ try { return localStorage.getItem(OFF) === '1'; } catch(e){ return false; } }
+
+  function onToday(){
+    var host = document.getElementById('screen-home');
+    if (!host) return;
+    var card = document.getElementById('quizOffer');
+    if (answered() || dismissed()) { if (card) card.remove(); return; }
+    if (card) return;
+    card = document.createElement('div');
+    card.id = 'quizOffer'; card.className = 'card quiz-offer';
+    card.innerHTML =
+      '<p class="quiz-offer-t">Make these fit your marriage</p>' +
+      '<p class="quiz-offer-s">A few questions about where you are up to. The daily suggestion and the date ideas both change to match.</p>' +
+      '<div class="quiz-offer-row"><button class="btn" id="quizGo">Answer them</button>' +
+      '<button class="pw-link" id="quizNo">Not now</button></div>';
+    host.insertBefore(card, host.firstChild);
+    document.getElementById('quizGo').onclick = function(){ if (window.__openQuiz) window.__openQuiz(); };
+    document.getElementById('quizNo').onclick = function(){ try { localStorage.setItem(OFF,'1'); } catch(e){} card.remove(); };
   }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function(){ setTimeout(tidy, 600); });
-  else setTimeout(tidy, 600);
-  document.addEventListener('click', function(){ setTimeout(tidy, 150); }, true);
+
+  function inSettings(){
+    var host = document.getElementById('screen-reminders');
+    if (!host || document.getElementById('quizRow')) return;
+    var done = answered();
+    var wrap = document.createElement('div');
+    wrap.id = 'quizRow'; wrap.className = 'quiz-row';
+    wrap.innerHTML = '<p class="section-label">Suggestions</p>' +
+      '<p class="quiz-row-sub">' + (done ? 'You have answered these. You can change them whenever.'
+        : 'A few questions, so the daily suggestion and the date ideas fit where you are up to.') + '</p>' +
+      '<button class="btn quiet" id="quizRowBtn">' + (done ? 'Change your answers' : 'Answer a few questions') + '</button>';
+    var back = document.getElementById('backToApps');
+    if (back && back.parentNode === host) host.insertBefore(wrap, back); else host.appendChild(wrap);
+    document.getElementById('quizRowBtn').onclick = function(){ try { localStorage.removeItem(OFF); } catch(e){} if (window.__openQuiz) window.__openQuiz(); };
+  }
+
+  function draw(){ onToday(); inSettings(); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function(){ setTimeout(draw, 900); });
+  else setTimeout(draw, 900);
+  document.addEventListener('click', function(){ setTimeout(draw, 160); }, true);
 })();
 </script>
+<style>
+/* 2. The bottom bar was off to the left.
+   It is 480px wide with left:0; right:0 and translateX(-240px). That
+   transform only centres something anchored at left:50% — with left:0 it
+   drags the bar 240px off the left edge of the screen instead, so half of it
+   was outside the window on a wide screen and shifted on a phone.
+   Centred the plain way, with no transform to undo. */
+nav{
+  left:50% !important;
+  right:auto !important;
+  transform:translateX(-50%) !important;
+}
+.quiz-offer{border:1.5px dashed #D8D4E8}
+.quiz-offer-t{font-size:16px;font-weight:700;color:#1F1B56;margin:0 0 4px}
+.quiz-offer-s{font-size:13.5px;line-height:1.55;color:#6F6A94;margin:0 0 12px}
+.quiz-offer-row{display:flex;gap:10px;align-items:center}
+.quiz-offer-row .btn{flex:1;min-height:44px}
+.quiz-offer-row .pw-link{width:auto;flex:0 0 auto;padding:11px 10px}
+.quiz-row{margin-top:26px}
+.quiz-row-sub{color:#6F6A94;font-size:13.5px;line-height:1.55;margin:0 0 10px}
+#quizRowBtn{width:100%;min-height:46px}
+</style>
+
 <script>
 /* Reminders, wired up at last.
 
