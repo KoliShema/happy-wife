@@ -3245,7 +3245,9 @@ nav{
   var URL_ = 'https://ujpwrinutaweqcxgjvvr.supabase.co';
   var KEY_ = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVqcHdyaW51dGF3ZXFjeGdqdnZyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA5NTQ5NTIsImV4cCI6MjEwNjUzMDk1Mn0.bGyogL1nmt7Qi553gPkCZ3CBXNT6gujAdpa85G2xoEc';
   var APP  = 'wife';
-  var MARK = 'ko-seen';
+  var MARK = 'ko-seen-' + APP;   // one marker per app: all four share an origin,
+                                 // so a single key meant only the first app
+                                 // opened each day was ever counted
   function today(){ return new Date().toISOString().slice(0, 10); }
   function alreadyToday(){ try { return localStorage.getItem(MARK) === today(); } catch (e) { return true; } }
   function markToday(){ try { localStorage.setItem(MARK, today()); } catch (e) {} }
