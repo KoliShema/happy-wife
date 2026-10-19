@@ -3339,5 +3339,96 @@ nav{
   window.__habitFit = { allowed: allowed, tagged: Object.keys(TAG).length };
 })();
 </script>
+<script>
+/* The You tab had a heading, a disclaimer and a sources line, and no content.
+   It cited research on men's help-seeking and then offered nothing.
+
+   What the research actually says, and what it rules out:
+
+   - Men's Sheds work through "doing rather than disclosing" — side-by-side
+     activity in a psychologically safe place, which aligns with masculine
+     norms and lowers the stigma that keeps men out of clinic settings. One
+     review calls it health by stealth.
+   - Social support from friends FULLY mediated the link between friendship
+     networks and men's depression. Knowing people is not the thing; having
+     somebody who actually supports you is.
+   - Behavioural activation beat an active control in a three-arm randomised
+     trial and held at six months. Do the thing first; the wanting-to comes
+     after, or not at all.
+   - Knowing it matters does nothing. Adherence was predicted by perceived
+     achievability, not by health benefits — and men who rated connection as
+     important reported HIGHER loneliness.
+
+   So: no feelings vocabulary, nothing that reads as help-seeking, no
+   explaining why it matters. Ten concrete things, doable tonight. */
+(function(){
+  var ITEMS = [
+    {t:'Ring somebody on the way home', d:'Instead of the shiur or the news. The car is the one place nobody can interrupt you, and you do not have to look at each other.'},
+    {t:'Go back to the thing you stopped going to', d:'The chavrusa, the minyan you liked, the Thursday game. Not a new thing. The one you already stopped.'},
+    {t:'Send one real sentence to a friend', d:'Not a forward, not a meme. One sentence about something actually happening to you. He will answer or he will not, and either way you sent it.'},
+    {t:'Fix something with another man there', d:'A car, a shelf, a tree. Men say more side by side than face to face, and nobody has to call it talking.'},
+    {t:'Say yes to the next invitation', d:'The one you would normally find a reason to miss. Decide before you feel like it \u2014 the wanting-to comes afterwards, not before.'},
+    {t:'Ask somebody how he is and then wait', d:'Past the first answer. The first answer is always fine. The second one is sometimes not.'},
+    {t:'Eat lunch with somebody once this week', d:'Not a meeting. Not a purpose. Twenty minutes.'},
+    {t:'Be the one who organises it', d:'Everybody is waiting for somebody else to. It takes one message.'},
+    {t:'Do the thing before you want to do it', d:'Waiting to feel like it is the trap. The feeling arrives while you are already doing it, or it does not arrive at all.'},
+    {t:'Tell one person something true this week', d:'Something small that is actually bothering you. Not the whole thing. One true sentence to one person who will not repeat it.'}
+  ];
+
+  function draw(){
+    var host = document.getElementById('screen-you');
+    if (!host || document.getElementById('youList')) return;
+
+    var wrap = document.createElement('div');
+    wrap.id = 'youList';
+
+    var lead = document.createElement('p');
+    lead.className = 'you-lead';
+    lead.textContent = 'Men do this sideways. Not sitting down to talk about it \u2014 doing something next to somebody. Pick one.';
+    wrap.appendChild(lead);
+
+    var ul = document.createElement('ul');
+    ul.className = 'you-ul';
+    ITEMS.forEach(function(it){
+      var li = document.createElement('li');
+      var h = document.createElement('h4'); h.textContent = it.t;
+      var p = document.createElement('p');  p.textContent = it.d;
+      li.appendChild(h); li.appendChild(p); ul.appendChild(li);
+    });
+    wrap.appendChild(ul);
+
+    var hard = document.createElement('div');
+    hard.className = 'you-hard';
+    var hh = document.createElement('p'); hh.className = 'you-hard-t';
+    hh.textContent = 'If this has been going on a long time';
+    var hp = document.createElement('p');
+    hp.textContent = 'Months rather than weeks, or you cannot remember the last time you felt like yourself \u2014 '
+                   + 'that is worth saying to a doctor or somebody who does this properly. Not because something is '
+                   + 'wrong with you. Because it works, and carrying it alone does not.';
+    hard.appendChild(hh); hard.appendChild(hp);
+    wrap.appendChild(hard);
+
+    /* above the sources line, under the existing intro */
+    var src = [].slice.call(host.querySelectorAll('p')).filter(function(p){
+      return /^Sources:/.test((p.textContent||'').trim()); })[0];
+    if (src && src.parentNode === host) host.insertBefore(wrap, src);
+    else host.appendChild(wrap);
+  }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function(){ setTimeout(draw, 900); });
+  else setTimeout(draw, 900);
+  document.addEventListener('click', function(){ setTimeout(draw, 160); }, true);
+})();
+</script>
+<style>
+.you-lead{font-size:15px;line-height:1.6;color:#4A4570;margin:4px 0 18px}
+.you-ul{list-style:none;padding:0;margin:0}
+.you-ul li{padding:16px 0;border-top:1px solid rgba(0,0,0,.08)}
+.you-ul h4{margin:0 0 5px;font-size:16px;font-weight:700;color:#1F1B56;line-height:1.35}
+.you-ul p{margin:0;font-size:14.5px;line-height:1.6;color:#6F6A94}
+.you-hard{margin-top:26px;padding:16px 18px;border-radius:14px;background:rgba(31,27,86,.05)}
+.you-hard-t{margin:0 0 6px;font-weight:700;color:#1F1B56;font-size:15px}
+.you-hard p{margin:0;font-size:14px;line-height:1.6;color:#4A4570}
+</style>
 </body>
 </html>
