@@ -3497,5 +3497,52 @@ nav{
   setTimeout(strip, 1800);
 })();
 </script>
+<style>
+/* The bottom bar, sized as well as centred.
+
+   Centring it earlier meant setting right:auto, which removed the thing that
+   was stretching it to full width — so it collapsed to shrink-to-fit, 196px,
+   28px per tab, labels at 9px running into each other. Fixing the position
+   broke the size.
+
+   Given an explicit width now: 480px, or the viewport minus a margin on a
+   phone. Seven tabs in 480px is 68px each, which fits a label at 11px with
+   room around it. */
+nav{
+  left:50% !important;
+  right:auto !important;
+  transform:translateX(-50%) !important;
+  width:min(480px, calc(100vw - 20px)) !important;
+  max-width:480px !important;
+  box-sizing:border-box !important;
+  display:flex !important;
+  justify-content:space-between !important;
+}
+nav button{
+  flex:1 1 0 !important;
+  min-width:0 !important;
+  padding:9px 2px 6px !important;
+  gap:3px !important;
+}
+nav button span,
+nav button small,
+nav button div{
+  font-size:11px !important;
+  line-height:1.2 !important;
+  letter-spacing:.005em !important;
+  white-space:nowrap !important;
+  overflow:hidden !important;
+  text-overflow:ellipsis !important;
+  max-width:100% !important;
+  display:block !important;
+}
+nav button svg{ width:21px !important; height:21px !important; }
+
+/* at the narrowest, drop to icons only rather than squeeze the words */
+@media (max-width:360px){
+  nav button span, nav button small, nav button div{ font-size:0 !important; }
+  nav button svg{ width:24px !important; height:24px !important; }
+}
+</style>
 </body>
 </html>
