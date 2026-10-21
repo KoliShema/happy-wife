@@ -10,7 +10,7 @@
 <meta name="description" content="Happy Wife — two small things a day for your marriage. Part of Happy Relationships from Koli Shema.">
 <meta name="theme-color" content="#1F1B56">
 <link rel="manifest" href="manifest.json">
-<title>Happy Wife · Happy Relationships</title>
+<title>Happy Wife</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <style>
@@ -3430,5 +3430,77 @@ nav{
 .you-hard-t{margin:0 0 6px;font-weight:700;color:#1F1B56;font-size:15px}
 .you-hard p{margin:0;font-size:14px;line-height:1.6;color:#4A4570}
 </style>
+<style>
+/* MMCreativity palette, and Koli Shema branding removed.
+
+   Navy #1F3A5F, honey #E3A443, off-white #FAF7F2, slate #5B6B7A.
+   The old scheme was Koli Shema's navy and coral; every colour in the app
+   came from four CSS variables, so remapping those changes the whole thing
+   without touching a single rule.
+
+   Honey is an accent, not a primary: the brand rule is roughly 60% white,
+   30% navy, 10% gold, and white text on honey fails contrast — so buttons
+   are honey fill with dark navy text, which passes. */
+:root{
+  --navy:        #1F3A5F !important;
+  --coral:       #E3A443 !important;   /* the accent slot, now honey */
+  --coral-tint:  #F0C87F !important;
+  --cream:       #FAF7F2 !important;
+  --muted:       #5B6B7A !important;
+  --border:      rgba(31,58,95,.14) !important;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --navy:       #F2EFE9 !important;
+    --cream:      #142741 !important;
+    --card:       #1C3350 !important;
+    --coral:      #E3A443 !important;
+    --coral-tint: #F0C87F !important;
+    --muted:      #A9B6C4 !important;
+    --border:     rgba(255,255,255,.14) !important;
+  }
+}
+
+/* buttons: honey fill needs dark text, never white */
+.btn{ background:#E3A443 !important; color:#142741 !important; }
+.btn.quiet{ background:transparent !important; color:inherit !important; }
+
+/* full-screen overlays stay dark navy in both schemes */
+#welcome, #lock, #quiz{ background:#1F3A5F !important; color:#fff !important; }
+#toast{ background:#1F3A5F !important; color:#fff !important; }
+
+/* the three chevrons were the Koli Shema mark */
+#appSwitch{ display:none !important; }
+</style>
+<script>
+/* Take the Koli Shema name and the cross-app links out.
+   The apps were presented as a Koli Shema set; they are now standalone, so
+   anything naming the charity or pointing at the other two comes out. The
+   feedback button stays — only the address behind it is the charity's, and
+   that is a separate decision. */
+(function(){
+  function strip(){
+    var gone = document.getElementById('appSwitch');
+    if (gone) gone.remove();
+
+    document.querySelectorAll('#backToApps, .back-apps').forEach(function(e){ e.remove(); });
+
+    document.querySelectorAll('a[href*="kolishema.github.io"]').forEach(function(a){
+      if (!/happy-wife-app/.test(a.getAttribute('href') || '')) a.remove();
+    });
+
+    /* any leftover text naming the charity or the old set */
+    document.querySelectorAll('p,span,small,h1,h2,h3,h4,a,div').forEach(function(e){
+      if (e.children.length) return;
+      var t = (e.textContent || '').trim();
+      if (/Koli Shema/i.test(t) || /^.{0,3}Happy Relationships$/.test(t)) e.remove();
+    });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function(){ setTimeout(strip, 700); });
+  else setTimeout(strip, 700);
+  document.addEventListener('click', function(){ setTimeout(strip, 200); }, true);
+  setTimeout(strip, 1800);
+})();
+</script>
 </body>
 </html>
