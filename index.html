@@ -3598,5 +3598,33 @@ hr, .divider{ border-color:#E3E5EA !important; background:#E3E5EA !important; }
   .badge, .pill, .tag{ background:rgba(255,122,26,.18) !important; color:#FFA35C !important; }
 }
 </style>
+<style>
+/* Tangerine text on light, found by measuring instead of guessing.
+
+   My first rust rule used invented class names and caught almost nothing.
+   Measuring every element whose computed colour was tangerine found seven
+   real ones: the four stat numerals, the new-pair button, the active nav
+   label and the sign-out link. On white they measured 2.61:1, where 4.5 is
+   the floor for body text.
+
+   Rust #8A3E00 on white is 7.6:1. Tangerine stays on fills, rules and icons,
+   which is what the brand intends. In dark mode tangerine passes on ink, so
+   it goes back. */
+#statTotal.val, #statBest.val, #statDays.val, #statDoneToday.val,
+.new-pair-btn, .signout-btn.danger,
+nav button[aria-current] span, nav button.active span, nav .on span{
+  color:#8A3E00 !important;
+}
+.new-pair-btn{ border-color:#8A3E00 !important; }
+
+@media (prefers-color-scheme: dark){
+  #statTotal.val, #statBest.val, #statDays.val, #statDoneToday.val,
+  .new-pair-btn, .signout-btn.danger,
+  nav button[aria-current] span, nav button.active span, nav .on span{
+    color:#FF7A1A !important;
+  }
+  .new-pair-btn{ border-color:#FF7A1A !important; }
+}
+</style>
 </body>
 </html>
