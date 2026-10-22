@@ -8,15 +8,15 @@
 <meta name="apple-mobile-web-app-title" content="Happy Wife">
 <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%231F1B56'/%3E%3Ctext y='.9em' font-size='80' text-anchor='middle' x='50'%3E%F0%9F%92%95%3C/text%3E%3C/svg%3E">
 <meta name="description" content="Happy Wife — two small things a day for your marriage. Part of Happy Relationships from Koli Shema.">
-<meta name="theme-color" content="#1F1B56">
+<meta name="theme-color" content="#1A1F2E">
 <link rel="manifest" href="manifest.json">
 <title>Happy Wife</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <style>
 :root {
-  --navy: #1F1B56; --coral: #EB4137; --coral-tint: #F3A79E;
-  --cream: #FAF9F6; --muted: #7472A0; --border: rgba(31,27,86,0.12);
+  --navy: #1A1F2E; --coral: #FF7A1A; --coral-tint: #FFA35C;
+  --cream: #F7F5F0; --muted: #7472A0; --border: rgba(26, 31, 46,0.12);
   --safe-top: env(safe-area-inset-top,0px); --safe-bottom: env(safe-area-inset-bottom,0px);
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
@@ -90,7 +90,7 @@ html,body{height:100%;overflow:hidden;background:var(--cream);font-family:'Poppi
 
 /* Desktop: constrain app width so it looks like a phone */
 @media (min-width: 600px) {
-  #app{max-width:480px;margin:0 auto;box-shadow:0 0 40px rgba(31,27,86,0.1);background:var(--cream)}
+  #app{max-width:480px;margin:0 auto;box-shadow:0 0 40px rgba(26, 31, 46,0.1);background:var(--cream)}
   #nav{max-width:480px;left:50%;transform:translateX(-50%)}
 }
 
@@ -124,7 +124,7 @@ html,body{height:100%;overflow:hidden;background:var(--cream);font-family:'Poppi
 .habit-text{flex:1}
 .habit-title{font-size:15px;font-weight:700;color:var(--navy);margin-bottom:2px}
 .habit-desc{font-size:13px;color:var(--muted);line-height:1.45}
-.habit-time{font-size:11px;color:#EB4137;margin-top:5px;font-weight:700;letter-spacing:0.03em}
+.habit-time{font-size:11px;color:#FF7A1A;margin-top:5px;font-weight:700;letter-spacing:0.03em}
 .habit-title.done{text-decoration:line-through;opacity:0.5}
 .section-label{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:10px;margin-top:20px}
 .new-pair-btn{width:100%;border:1.5px solid var(--coral);border-radius:12px;background:white;color:var(--coral);font-family:'Poppins',sans-serif;font-size:14px;font-weight:700;padding:13px;cursor:pointer;margin-top:4px;transition:background 0.15s}
@@ -146,7 +146,7 @@ html,body{height:100%;overflow:hidden;background:var(--cream);font-family:'Poppi
 .note-tag{font-size:10px;font-weight:700;color:var(--coral);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:4px}
 .note-text{font-size:14px;color:var(--navy);line-height:1.5}
 .note-del{color:var(--muted);font-size:18px;cursor:pointer;flex-shrink:0;padding:2px 4px}
-.random-btn{width:100%;background:#EEEDF8;border:1.5px solid rgba(31,27,86,0.2);border-radius:12px;color:var(--navy);font-family:'Poppins',sans-serif;font-size:14px;font-weight:700;padding:13px;cursor:pointer;margin-bottom:16px}
+.random-btn{width:100%;background:#EEEDF8;border:1.5px solid rgba(26, 31, 46,0.2);border-radius:12px;color:var(--navy);font-family:'Poppins',sans-serif;font-size:14px;font-weight:700;padding:13px;cursor:pointer;margin-bottom:16px}
 .random-result{background:var(--navy);color:white;border-radius:14px;padding:16px;text-align:center;font-size:16px;font-style:italic;line-height:1.5;margin-bottom:16px;display:none}
 .tabs{display:flex;gap:8px;margin-bottom:14px}
 .tab-btn{flex:1;border:1.5px solid var(--coral-tint);border-radius:10px;padding:9px 0;font-family:'Poppins',sans-serif;font-size:13px;font-weight:700;cursor:pointer;background:white;color:var(--muted)}
@@ -164,7 +164,7 @@ html,body{height:100%;overflow:hidden;background:var(--cream);font-family:'Poppi
 .date-when{font-size:12px;color:var(--muted);margin-top:2px}
 .date-countdown{font-size:12px;font-weight:700;color:var(--coral);margin-top:3px}
 .date-del{color:var(--muted);font-size:18px;cursor:pointer}
-.reminder-info{background:#EEEDF8;border:1px solid rgba(31,27,86,0.18);border-radius:14px;padding:14px 16px;margin-bottom:16px;font-size:13px;color:var(--navy);line-height:1.5}
+.reminder-info{background:#EEEDF8;border:1px solid rgba(26, 31, 46,0.18);border-radius:14px;padding:14px 16px;margin-bottom:16px;font-size:13px;color:var(--navy);line-height:1.5}
 .reminder-setting{background:white;border:1px solid var(--border);border-radius:14px;padding:14px 16px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between}
 .reminder-setting .lbl{font-size:14px;font-weight:700;color:var(--navy)}
 .reminder-setting .sub{font-size:12px;color:var(--muted);margin-top:2px}
@@ -183,7 +183,7 @@ html,body{height:100%;overflow:hidden;background:var(--cream);font-family:'Poppi
 .backbtn{background:none;border:0;color:var(--muted);font-family:'Poppins',sans-serif;font-size:14px;
   font-weight:600;cursor:pointer;padding:8px 0;min-height:44px;display:block;text-align:left}
 .backbtn:active{color:var(--coral)}
-.nudge{background:#EEEDF8;border:1px solid rgba(31,27,86,.18);border-radius:12px;padding:12px 14px;margin-bottom:14px;font-size:13px;color:var(--navy);cursor:pointer;line-height:1.5}
+.nudge{background:#EEEDF8;border:1px solid rgba(26, 31, 46,.18);border-radius:12px;padding:12px 14px;margin-bottom:14px;font-size:13px;color:var(--navy);cursor:pointer;line-height:1.5}
 .suggest-card{background:var(--navy);color:white;border-radius:16px;padding:18px;margin-bottom:18px}
 .suggest-text{font-size:17px;font-weight:600;line-height:1.4}
 .suggest-meta{font-size:11px;opacity:.65;margin-top:6px;text-transform:uppercase;letter-spacing:.05em}
@@ -242,7 +242,7 @@ html,body{height:100%;overflow:hidden;background:var(--cream);font-family:'Poppi
 .nav-btn span{font-size:9px}
 @media (max-width:370px){.nav-btn span{font-size:8px}.nav-btn svg{width:18px;height:18px}}
 .signout-btn.danger{color:var(--coral);border-color:var(--coral-tint);margin-top:8px}
-.modal{position:fixed;inset:0;background:rgba(31,27,86,.55);display:flex;align-items:center;justify-content:center;z-index:500;padding:16px}
+.modal{position:fixed;inset:0;background:rgba(26, 31, 46,.55);display:flex;align-items:center;justify-content:center;z-index:500;padding:16px}
 .modal-card{background:white;border-radius:18px;max-width:440px;width:100%;max-height:80vh;display:flex;flex-direction:column;overflow:hidden}
 .modal-head{display:flex;align-items:center;justify-content:space-between;padding:16px 18px;border-bottom:1px solid var(--border)}
 .modal-head h3{font-size:16px;font-weight:700;color:var(--navy)}
@@ -2015,7 +2015,7 @@ const LEGAL = {
 <h4>Changes</h4>
 <p>If this policy changes in a way that matters, we will say so in the app rather than quietly update this page.</p>
 <h4>Contact</h4>
-<p>Questions about your data: office.kolishema@gmail.com</p>`
+<p>Questions about your data: momezei@gmail.com</p>`
   },
   terms: {
     title: "Terms of use",
@@ -2033,7 +2033,7 @@ const LEGAL = {
 <h4>Ending use</h4>
 <p>You can delete your account at any time from Settings. We may suspend accounts that are being used abusively.</p>
 <h4>Contact</h4>
-<p>office.kolishema@gmail.com</p>`
+<p>momezei@gmail.com</p>`
   }
 };
 
@@ -2072,7 +2072,7 @@ async function deleteAccount(){
     localStorage.removeItem('hw-pending');
     if(error){
       await sb.auth.signOut();
-      alert("Your data has been deleted and you've been signed out.\n\nTo remove the login record itself, email office.kolishema@gmail.com and we'll clear it.");
+      alert("Your data has been deleted and you've been signed out.\n\nTo remove the login record itself, email momezei@gmail.com and we'll clear it.");
     } else {
       await sb.auth.signOut();
       alert("Your account and all data have been deleted.");
@@ -2249,9 +2249,9 @@ if("serviceWorker" in navigator){
    with a password before Google sign-in existed. */
 .pw-or{display:flex;align-items:center;gap:10px;margin:18px 0 14px;color:#8A85AD;font-size:12.5px}
 .pw-or::before,.pw-or::after{content:"";flex:1;height:1px;background:#E4E1EF}
-.pw-in{width:100%;padding:13px 14px;margin-bottom:9px;border-radius:11px;border:1.5px solid #E4E1EF;background:#FAF9FD;color:#1F1B56;font-family:'Poppins',sans-serif;font-size:15px;outline:none;min-height:46px}
+.pw-in{width:100%;padding:13px 14px;margin-bottom:9px;border-radius:11px;border:1.5px solid #E4E1EF;background:#FAF9FD;color:#1A1F2E;font-family:'Poppins',sans-serif;font-size:15px;outline:none;min-height:46px}
 .pw-in::placeholder{color:#9D98BC}
-.pw-in:focus{border-color:#EB4137;background:#fff}
+.pw-in:focus{border-color:#FF7A1A;background:#fff}
 .pw-btn{width:100%;padding:13px;border:0;border-radius:11px;background:var(--coral);color:#fff;
   font-family:'Poppins',sans-serif;font-size:15px;font-weight:700;cursor:pointer;min-height:48px;margin-top:4px}
 .pw-link{width:100%;background:none;border:0;color:#6F6A94;font-family:'Poppins',sans-serif;font-size:13px;cursor:pointer;padding:11px;min-height:44px;text-decoration:underline}
@@ -2339,7 +2339,7 @@ if("serviceWorker" in navigator){
 .back-apps{display:block;text-align:center;margin:26px auto calc(env(safe-area-inset-bottom,0px) + 20px);
   padding:13px;color:#6F6A94;font-size:14px;text-decoration:none;border-top:1px solid rgba(0,0,0,.08);
   padding-top:20px;min-height:44px}
-.back-apps:active{color:#EB4137}
+.back-apps:active{color:#FF7A1A}
 </style>
 <script>
 /* Setting a new password after a reset email.
@@ -2397,10 +2397,10 @@ if("serviceWorker" in navigator){
 })();
 </script>
 <style>
-.pwreset-wrap{position:fixed;inset:0;z-index:9999;background:#1F1B56;display:flex;align-items:center;
+.pwreset-wrap{position:fixed;inset:0;z-index:9999;background:#1A1F2E;display:flex;align-items:center;
   justify-content:center;padding:calc(env(safe-area-inset-top,0px) + 24px) 20px calc(env(safe-area-inset-bottom,0px) + 24px);overflow-y:auto}
 .pwreset-card{background:#fff;border-radius:20px;padding:26px 22px;max-width:380px;width:100%}
-.pwreset-card h2{color:#1F1B56;font-size:22px;margin:0 0 6px}
+.pwreset-card h2{color:#1A1F2E;font-size:22px;margin:0 0 6px}
 .pwreset-card p{color:#6F6A94;font-size:14px;margin:0 0 18px;line-height:1.5}
 </style>
 <script>
@@ -2433,13 +2433,13 @@ if("serviceWorker" in navigator){
   top:calc(env(safe-area-inset-top,0px) + 10px);
   right:calc(env(safe-area-inset-right,0px) + 12px);
   gap:3px;align-items:center;justify-content:center;
-  padding:11px 12px;border-radius:999px;background:rgba(31,27,86,.07);
+  padding:11px 12px;border-radius:999px;background:rgba(26, 31, 46,.07);
   text-decoration:none;min-height:44px;min-width:44px;box-sizing:border-box}
 #appSwitch i{display:block;width:4px;height:15px;border-radius:1px;transform:skewX(-14deg)}
-#appSwitch i:nth-child(1){background:#F3A79E}
-#appSwitch i:nth-child(2){background:#EE6E64}
-#appSwitch i:nth-child(3){background:#EB4137}
-#appSwitch:active{background:rgba(31,27,86,.14)}
+#appSwitch i:nth-child(1){background:#FFA35C}
+#appSwitch i:nth-child(2){background:#FF9440}
+#appSwitch i:nth-child(3){background:#FF7A1A}
+#appSwitch:active{background:rgba(26, 31, 46,.14)}
 </style>
 <script>
 /* Only offer Google where Google can actually finish.
@@ -2625,14 +2625,14 @@ if("serviceWorker" in navigator){
 })();
 </script>
 <style>
-.weekq{border-left:3px solid #1F1B56}
+.weekq{border-left:3px solid #1A1F2E}
 .wq-q{font-size:18px;line-height:1.4;margin:4px 0 8px}
 .wq-in{width:100%;padding:12px 14px;border-radius:11px;border:1.5px solid #E4E1EF;background:#FAF9FD;
-  color:#1F1B56;font:inherit;font-size:15px;resize:vertical;box-sizing:border-box;margin-bottom:10px}
+  color:#1A1F2E;font:inherit;font-size:15px;resize:vertical;box-sizing:border-box;margin-bottom:10px}
 .wq-pair{padding:11px 0;border-top:1px solid rgba(0,0,0,.07)}
 .wq-pair p{margin:3px 0 0;font-size:15.5px;line-height:1.5}
 .wq-who{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:#8A85AD}
-.wq-them .wq-who{color:#EB4137}
+.wq-them .wq-who{color:#FF7A1A}
 .wq-wait{margin-top:10px;font-size:13.5px}
 .wq-err{color:#C62828;font-size:13px;min-height:16px}
 </style>
@@ -2709,13 +2709,13 @@ if("serviceWorker" in navigator){
 })();
 </script>
 <style>
-.reap-wrap{position:fixed;inset:0;z-index:9000;background:#1F1B56;display:flex;align-items:center;justify-content:center;
+.reap-wrap{position:fixed;inset:0;z-index:9000;background:#1A1F2E;display:flex;align-items:center;justify-content:center;
   padding:calc(env(safe-area-inset-top,0px) + 20px) 18px calc(env(safe-area-inset-bottom,0px) + 20px);overflow-y:auto}
 .reap-card{background:#fff;border-radius:20px;padding:26px 22px;max-width:420px;width:100%}
-.reap-card h2{color:#1F1B56;font-size:21px;line-height:1.3;margin:4px 0 10px}
+.reap-card h2{color:#1A1F2E;font-size:21px;line-height:1.3;margin:4px 0 10px}
 .reap-lead{color:#4A4570;font-size:15px;line-height:1.6;margin:0 0 16px}
 .reap-in{width:100%;padding:13px 14px;border-radius:12px;border:1.5px solid #E4E1EF;background:#FAF9FD;
-  color:#1F1B56;font:inherit;font-size:15.5px;line-height:1.55;resize:vertical;box-sizing:border-box;margin-bottom:12px}
+  color:#1A1F2E;font:inherit;font-size:15.5px;line-height:1.55;resize:vertical;box-sizing:border-box;margin-bottom:12px}
 .reap-note{color:#8A85AD;font-size:13px;line-height:1.5;margin:0 0 16px}
 .reap-later{margin-top:6px}
 </style><script>
@@ -2779,7 +2779,7 @@ if("serviceWorker" in navigator){
 </script>
 <style>
 .just-use{display:block;width:100%;padding:15px;margin:0 0 8px;border:0;border-radius:12px;
-  background:#EB4137;color:#fff;font:inherit;font-size:16px;font-weight:700;cursor:pointer;min-height:52px}
+  background:#FF7A1A;color:#fff;font:inherit;font-size:16px;font-weight:700;cursor:pointer;min-height:52px}
 .just-note{text-align:center;color:#8A85AD;font-size:13px;line-height:1.5;margin:0 0 18px}
 .just-or{display:flex;align-items:center;gap:10px;margin:0 0 16px;color:#9D98BC;font-size:12.5px}
 .just-or::before,.just-or::after{content:"";flex:1;height:1px;background:#E4E1EF}
@@ -2967,7 +2967,7 @@ nav{
   transform:translateX(-50%) !important;
 }
 .quiz-offer{border:1.5px dashed #D8D4E8}
-.quiz-offer-t{font-size:16px;font-weight:700;color:#1F1B56;margin:0 0 4px}
+.quiz-offer-t{font-size:16px;font-weight:700;color:#1A1F2E;margin:0 0 4px}
 .quiz-offer-s{font-size:13.5px;line-height:1.55;color:#6F6A94;margin:0 0 12px}
 .quiz-offer-row{display:flex;gap:10px;align-items:center}
 .quiz-offer-row .btn{flex:1;min-height:44px}
@@ -3097,7 +3097,7 @@ nav{
 .hw-nudge{margin-top:26px}
 .hw-nudge-s{color:#6F6A94;font-size:13.5px;line-height:1.55;margin:0 0 10px}
 .hw-time{width:100%;padding:12px 14px;border-radius:11px;border:1.5px solid #E4E1EF;background:#FAF9FD;
-  color:#1F1B56;font:inherit;font-size:16px;margin-bottom:10px;min-height:46px;box-sizing:border-box}
+  color:#1A1F2E;font:inherit;font-size:16px;margin-bottom:10px;min-height:46px;box-sizing:border-box}
 .hw-err{color:#C62828;font-size:13px;min-height:16px;margin-top:6px}
 #hwOn,#hwOff{width:100%;min-height:46px}
 </style>
@@ -3161,7 +3161,7 @@ nav{
 .close-list{margin-top:26px}
 .close-sub{color:#6F6A94;font-size:13.5px;line-height:1.55;margin:0 0 12px}
 .close-ul{list-style:none;padding:0;margin:0}
-.close-ul li{padding:13px 0;border-top:1px solid rgba(0,0,0,.07);font-size:15px;line-height:1.55;color:#1F1B56}
+.close-ul li{padding:13px 0;border-top:1px solid rgba(0,0,0,.07);font-size:15px;line-height:1.55;color:#1A1F2E}
 </style>
 <script>
 /* A way to tell us it's wrong.
@@ -3176,7 +3176,7 @@ nav{
    gets something. The subject names the app, and the body starts them off
    rather than leaving a blank page. */
 (function(){
-  var TO = 'office.kolishema@gmail.com';
+  var TO = 'momezei@gmail.com';
   var APP = 'Happy Wife';
   var HOST = 'screen-reminders';
 
@@ -3424,10 +3424,10 @@ nav{
 .you-lead{font-size:15px;line-height:1.6;color:#4A4570;margin:4px 0 18px}
 .you-ul{list-style:none;padding:0;margin:0}
 .you-ul li{padding:16px 0;border-top:1px solid rgba(0,0,0,.08)}
-.you-ul h4{margin:0 0 5px;font-size:16px;font-weight:700;color:#1F1B56;line-height:1.35}
+.you-ul h4{margin:0 0 5px;font-size:16px;font-weight:700;color:#1A1F2E;line-height:1.35}
 .you-ul p{margin:0;font-size:14.5px;line-height:1.6;color:#6F6A94}
-.you-hard{margin-top:26px;padding:16px 18px;border-radius:14px;background:rgba(31,27,86,.05)}
-.you-hard-t{margin:0 0 6px;font-weight:700;color:#1F1B56;font-size:15px}
+.you-hard{margin-top:26px;padding:16px 18px;border-radius:14px;background:rgba(26, 31, 46,.05)}
+.you-hard-t{margin:0 0 6px;font-weight:700;color:#1A1F2E;font-size:15px}
 .you-hard p{margin:0;font-size:14px;line-height:1.6;color:#4A4570}
 </style>
 
@@ -3542,6 +3542,60 @@ nav button svg{ width:21px !important; height:21px !important; }
 @media (max-width:360px){
   nav button span, nav button small, nav button div{ font-size:0 !important; }
   nav button svg{ width:24px !important; height:24px !important; }
+}
+</style>
+<style>
+/* The Mezay rules the first pass missed.
+
+   Swapping the four variables got the broad look right but skipped the
+   details the brand actually specifies. The important one is contrast:
+   tangerine on paper FAILS for text. The streak screen had orange numerals
+   on white cards, which is exactly that failure. Tangerine-family text on a
+   light background is rust; tangerine stays on shapes, rules and buttons.
+
+   Also added: sand for borders and inputs, white for cards sitting on paper,
+   ink tint for dividers, tangerine tint with rust for badges, ink light for
+   cards on an ink background. */
+:root{
+  --mm-ink:#1A1F2E; --mm-ink-light:#2C3448; --mm-ink-muted:#A3A9B5;
+  --mm-ink-tint:#E3E5EA; --mm-tangerine:#FF7A1A; --mm-tangerine-dark:#C95A00;
+  --mm-tangerine-light:#FFA35C; --mm-tangerine-tint:#FFE6D1;
+  --mm-rust:#8A3E00; --mm-paper:#F7F5F0; --mm-sand:#E8E4DB; --mm-slate:#5F6675;
+}
+
+/* tangerine-family TEXT on light must be rust, never #FF7A1A */
+.stat-num, .statNum, .big-num, .count, .num,
+.card .accent, .accent-text, .streak-num{
+  color:#8A3E00 !important;
+}
+
+/* cards on paper are white, with sand borders */
+.card{ background:#fff !important; border-color:#E8E4DB !important; }
+input, textarea, select{
+  background:#fff !important;
+  border-color:#E8E4DB !important;
+  color:#1A1F2E !important;
+}
+hr, .divider{ border-color:#E3E5EA !important; background:#E3E5EA !important; }
+
+/* cards sitting on an ink panel */
+.on-ink .card, .dark .card{ background:#2C3448 !important; border-color:rgba(255,255,255,.1) !important; }
+
+/* badges: tangerine tint with rust text */
+.badge, .pill, .tag{ background:#FFE6D1 !important; color:#8A3E00 !important; }
+
+/* buttons: tangerine fill, ink text, darker on press */
+.btn{ background:#FF7A1A !important; color:#1A1F2E !important; }
+.btn:active{ background:#C95A00 !important; }
+.btn.quiet{ background:transparent !important; color:inherit !important; }
+
+@media (prefers-color-scheme: dark){
+  .card{ background:#2C3448 !important; border-color:rgba(255,255,255,.12) !important; }
+  input, textarea, select{ background:#2C3448 !important; border-color:rgba(255,255,255,.16) !important; color:#F2F1EE !important; }
+  /* on ink, tangerine passes — rust would be too dark */
+  .stat-num, .statNum, .big-num, .count, .num,
+  .card .accent, .accent-text, .streak-num{ color:#FF7A1A !important; }
+  .badge, .pill, .tag{ background:rgba(255,122,26,.18) !important; color:#FFA35C !important; }
 }
 </style>
 </body>
