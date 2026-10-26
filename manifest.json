@@ -1,26 +1,17 @@
 {
-  "name": "Happy Wife App",
+  "name": "Happy Wife",
   "short_name": "Happy Wife",
-  "description": "Daily habits to keep your wife happy — 2 things every day, streak tracker, love notes, and special date reminders.",
+  "description": "Two small things a day that make a marriage better. For husbands. Free, no account needed.",
   "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#1F1B56",
-  "theme_color": "#1F1B56",
+  "background_color": "#F7F5F0",
+  "theme_color": "#1A1F2E",
   "icons": [
-    {
-      "src": "icon-192.png",
-      "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "icon-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
-    }
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
   ],
-  "categories": ["lifestyle", "productivity"],
-  "screenshots": []
+  "categories": ["lifestyle"]
 }
